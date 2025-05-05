@@ -16,7 +16,13 @@ export const CounterDetails = ({
   onEditCounter,
   onDeleteCounter,
 }: Props) => {
-  const [customValue, setCustomValue] = useState<number | null>(
+  const [customValueDay, setCustomValueDay] = useState(
+    `${new Date().getDate()}`
+  );
+  const [customValueMonth, setCustomValueMonth] = useState(
+    `${new Date().getMonth() + 1}`
+  );
+  const [customValueTime, setCustomValueTime] = useState<number | null>(
     DEFAULT_SUBSTRACTING_OPTION_VALUE
   );
   const [isCustomValueNegative, setIsCustomValueNegative] = useState(true);
@@ -30,7 +36,7 @@ export const CounterDetails = ({
       additions: [
         ...activeCounter.additions,
         {
-          title: `${today.getDate()}/${today.getMonth() + 1}`,
+          date: `${today.getDate()}/${today.getMonth() + 1}`,
           substractedHours: value,
         },
       ],
@@ -46,13 +52,28 @@ export const CounterDetails = ({
     const { value } = e.target;
     const numValue = Number(value);
 
-    setCustomValue(isNaN(numValue) || numValue === 0 ? null : numValue);
+    setCustomValueTime(isNaN(numValue) || numValue === 0 ? null : numValue);
   };
 
   const onAddCustomValue = () => {
-    if (customValue === null) return;
+    if (customValueTime === null) return;
 
-    onModifyHours(isCustomValueNegative ? -customValue : customValue);
+    const formattedCustomValueTime = isCustomValueNegative
+      ? -customValueTime
+      : customValueTime;
+
+    const newCounter: Counter = {
+      ...activeCounter,
+      remainingHours: activeCounter.remainingHours + formattedCustomValueTime,
+      additions: [
+        ...activeCounter.additions,
+        {
+          date: `${customValueDay}/${customValueMonth}`,
+          substractedHours: formattedCustomValueTime,
+        },
+      ],
+    };
+    onEditCounter(newCounter);
   };
 
   const onDeleteAddition = (index: number) => {
@@ -96,32 +117,57 @@ export const CounterDetails = ({
               className="grow bg-purple-100 px-4 py-2 rounded-lg shadow-sm shadow-purple-600/30"
               onClick={() => onModifyHours(-opt)}
             >
-              -{opt} hores
+              -{opt}h
             </button>
           </div>
         ))}
       </div>
 
       {/* INPUT */}
-      <div className="flex flex-col items-center gap-y-2">
+      <div className="my-4 flex border-2 border-purple-100 shadow-lg rounded-sm py-4 flex-col items-center gap-y-2">
         <div
           className="space-x-2"
           onClick={toggleShowCustomValue}
         >
-          <label htmlFor="customValue">Valor Personalizado</label>
+          <label htmlFor="customValueTime">Valor Personalizado</label>
           <span className="">
             {showCustomValue ? <span>❌</span> : <span>👁️</span>}
           </span>
         </div>
         {showCustomValue && (
           <>
-            <input
-              className="border-2 text-purple-800 font-semibold border-purple-800 rounded-sm w-3xs text-center"
-              id="customValue"
-              type="number"
-              value={customValue === null ? '' : customValue}
-              onChange={handleCustomValueChange}
-            />
+            <div className="flex space-x-2">
+              <div className="flex flex-col bg-purple-100 shadow-lg rounded-sm p-4">
+                <div className="space-x-1">
+                  <input
+                    className="text-purple-800 bg-purple-50 font-semibold rounded-sm w-8 text-center"
+                    id="customValueDay"
+                    type="text"
+                    value={customValueDay}
+                    onChange={(e) => setCustomValueDay(e.target.value)}
+                  />
+                  <span>/</span>
+                  <input
+                    className="text-purple-800 bg-purple-50 font-semibold rounded-sm w-8 text-center"
+                    id="customValueMonth"
+                    type="text"
+                    value={customValueMonth}
+                    onChange={(e) => setCustomValueMonth(e.target.value)}
+                  />
+                </div>
+                <span>Fecha</span>
+              </div>
+              <div className="flex flex-col bg-purple-100 shadow-lg rounded-sm p-4">
+                <input
+                  className="text-purple-800 bg-purple-50 font-semibold rounded-sm w-16 text-center"
+                  id="customValueTime"
+                  type="number"
+                  value={customValueTime === null ? '' : customValueTime}
+                  onChange={handleCustomValueChange}
+                />
+                <span>Horas</span>
+              </div>
+            </div>
             <div className="space-x-2">
               <input
                 type="checkbox"
@@ -148,8 +194,13 @@ export const CounterDetails = ({
             key={i}
             className="flex items-center justify-between px-4 bg-gray-50 shadow"
           >
-            <div>
-              {item.title} {item.substractedHours} hores
+            <div>{item.date}</div>
+            <div
+              className={`${
+                item.substractedHours < 0 ? 'text-purple-500' : 'text-green-400'
+              } font-bold`}
+            >
+              {item.substractedHours} horas
             </div>
             <button
               className="text-xl font-bold p-2 cursor-pointer"

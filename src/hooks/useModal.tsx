@@ -21,7 +21,7 @@ export const useModal = () => {
         onClick={closeModal}
       >
         <div
-          className="relative bg-white p-8 min-w-sm"
+          className="relative bg-white p-16 rounded-lg w-md"
           onClick={(e) => e.stopPropagation()}
         >
           {modalContent}

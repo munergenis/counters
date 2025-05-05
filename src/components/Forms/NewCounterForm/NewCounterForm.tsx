@@ -60,10 +60,11 @@ export const NewCounterForm = ({ closeModal, onAddCounter }: Props) => {
         control={control}
         name="title"
         render={({ field }) => (
-          <div className="flex flex-col">
+          <div className="flex flex-col text-purple-800 bg-purple-200 p-2 font-semibold rounded-sm">
             <label htmlFor="title">Titulo</label>
             <div className="relative">
               <input
+                className="bg-purple-50 p-2 rounded-sm"
                 id={field.name}
                 type="text"
                 placeholder={new Date().getFullYear().toString()}
@@ -72,7 +73,7 @@ export const NewCounterForm = ({ closeModal, onAddCounter }: Props) => {
               <span
                 className={`absolute inset-y-0 right-0 ${
                   MAX_COUNTER_TITLE_LENGTH - field.value.length < 0 &&
-                  'text-red-400'
+                  'text-red-600'
                 }`}
               >
                 {MAX_COUNTER_TITLE_LENGTH - field.value.length}/10
@@ -87,9 +88,10 @@ export const NewCounterForm = ({ closeModal, onAddCounter }: Props) => {
         control={control}
         name="remainingHours"
         render={({ field }) => (
-          <div className="flex flex-col">
+          <div className="flex flex-col text-purple-800 bg-purple-200 p-2 font-semibold rounded-sm">
             <label htmlFor={field.name}>Horas Restantes</label>
             <input
+              className="bg-purple-50 p-2 rounded-sm"
               id={field.name}
               type="number"
               {...field}
@@ -106,12 +108,12 @@ export const NewCounterForm = ({ closeModal, onAddCounter }: Props) => {
         )}
       />
 
-      <div className="flex flex-col">
+      <div className="flex flex-col space-y-2 text-purple-800 bg-purple-200 p-2 font-semibold rounded-sm">
         <div className="flex justify-between">
           <label>Turnos</label>
           <div className="flex gap-x-2">
             <button
-              className="w-8 h-8 rounded-full flex items-baseline justify-center font-semibold text-xl bg-gray-100 disabled:hidden"
+              className="w-8 h-8 rounded-full flex items-baseline justify-center font-semibold text-xl bg-purple-50 disabled:hidden"
               type="button"
               disabled={substrOpts.length === 1}
               onClick={removeTurn}
@@ -119,7 +121,7 @@ export const NewCounterForm = ({ closeModal, onAddCounter }: Props) => {
               &ndash;
             </button>
             <button
-              className="w-8 h-8 rounded-full flex items-baseline justify-center font-semibold text-xl bg-gray-100"
+              className="w-8 h-8 rounded-full flex items-baseline justify-center font-semibold text-xl bg-purple-50"
               type="button"
               onClick={addTurn}
             >
@@ -138,6 +140,7 @@ export const NewCounterForm = ({ closeModal, onAddCounter }: Props) => {
             render={({ field }) => (
               <>
                 <input
+                  className="bg-purple-50 p-2 rounded-sm"
                   type="number"
                   {...field}
                   onChange={(e) => {

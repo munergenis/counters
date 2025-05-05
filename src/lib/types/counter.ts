@@ -1,5 +1,5 @@
 export interface Addition {
-  title: string;
+  date: string;
   substractedHours: number;
 }
 
