@@ -1,0 +1,6 @@
+export const DEFAULT_REMAINING_HOURS = 177;
+export const DEFAULT_SUBSTRACTING_OPTIONS = [7, 10, 14];
+export const DEFAULT_SUBSTRACTING_OPTION_VALUE = 7;
+export const MAX_HOURS = 1000;
+export const MIN_HOURS = -1000;
+export const MAX_COUNTER_TITLE_LENGTH = 10;
