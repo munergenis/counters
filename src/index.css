@@ -1,1 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+
 @import 'tailwindcss';
+
+@theme {
+  --font-montserrat: 'Nunito Sans', 'sans-serif';
+
+  --color-primary: var(--color-purple-400);
+  --color-secondary: var(--color-purple-50);
+
+  --color-accent: var(--color-purple-300);
+  --color-accent-dark: var(--color-black);
+
+  --color-gradient-start: var(--color-purple-400);
+  --color-gradient-end: var(--color-purple-600);
+
+  --color-card-secondary: var(--color-purple-200);
+
+  --color-error: var(--color-red-400);
+}
+
+@layer base {
+  input {
+    @apply bg-secondary p-2 rounded-sm;
+  }
+}

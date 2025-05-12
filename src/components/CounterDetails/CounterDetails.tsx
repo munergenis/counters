@@ -27,6 +27,7 @@ export const CounterDetails = ({
   );
   const [isCustomValueNegative, setIsCustomValueNegative] = useState(true);
   const [showCustomValue, setShowCustomValue] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   const onModifyHours = (value: number) => {
     const today = new Date();
@@ -88,8 +89,15 @@ export const CounterDetails = ({
     onEditCounter(newCounter);
   };
 
+  const handleShowConfirmation = () => {
+    setShowConfirmation(true);
+  };
+  const handleCancelConfirmation = () => {
+    setShowConfirmation(false);
+  };
   const handleDeleteCounter = () => {
     onDeleteCounter(activeCounter.id);
+    setShowConfirmation(false);
     onCloseCounter();
   };
 
@@ -114,22 +122,22 @@ export const CounterDetails = ({
             className="flex gap-2"
           >
             <button
-              className="grow bg-purple-100 px-4 py-2 rounded-lg shadow-sm shadow-purple-600/30"
+              className="grow bg-card-secondary font-semibold text-lg px-4 py-2 rounded-lg shadow-sm shadow-purple-600/30"
               onClick={() => onModifyHours(-opt)}
             >
-              -{opt}h
+              -{opt}H
             </button>
           </div>
         ))}
       </div>
 
       {/* INPUT */}
-      <div className="my-4 flex border-2 border-purple-100 shadow-lg rounded-sm py-4 flex-col items-center gap-y-2">
+      <div className="my-4 flex border-2 border-card-secondary shadow-lg rounded-sm py-4 flex-col items-center gap-y-2">
         <div
           className="space-x-2"
           onClick={toggleShowCustomValue}
         >
-          <label htmlFor="customValueTime">Valor Personalizado</label>
+          <label htmlFor="customValueTime">Valor Personalitzat</label>
           <span className="">
             {showCustomValue ? <span>❌</span> : <span>👁️</span>}
           </span>
@@ -137,10 +145,10 @@ export const CounterDetails = ({
         {showCustomValue && (
           <>
             <div className="flex space-x-2">
-              <div className="flex flex-col bg-purple-100 shadow-lg rounded-sm p-4">
+              <div className="flex flex-col bg-card-secondary shadow-lg rounded-sm p-4">
                 <div className="space-x-1">
                   <input
-                    className="text-purple-800 bg-purple-50 font-semibold rounded-sm w-8 text-center"
+                    className="bg-secondary font-semibold rounded-sm w-10 text-center"
                     id="customValueDay"
                     type="text"
                     value={customValueDay}
@@ -148,59 +156,60 @@ export const CounterDetails = ({
                   />
                   <span>/</span>
                   <input
-                    className="text-purple-800 bg-purple-50 font-semibold rounded-sm w-8 text-center"
+                    className="bg-secondary font-semibold rounded-sm w-10 text-center"
                     id="customValueMonth"
                     type="text"
                     value={customValueMonth}
                     onChange={(e) => setCustomValueMonth(e.target.value)}
                   />
                 </div>
-                <span>Fecha</span>
+                <span className="text-sm italic">Data</span>
               </div>
-              <div className="flex flex-col bg-purple-100 shadow-lg rounded-sm p-4">
+              <div className="flex flex-col bg-card-secondary shadow-lg rounded-sm p-4">
                 <input
-                  className="text-purple-800 bg-purple-50 font-semibold rounded-sm w-16 text-center"
+                  className="bg-secondary font-semibold rounded-sm w-16 text-center"
                   id="customValueTime"
                   type="number"
                   value={customValueTime === null ? '' : customValueTime}
                   onChange={handleCustomValueChange}
                 />
-                <span>Horas</span>
+                <span className="text-sm italic">Hores</span>
               </div>
             </div>
             <div className="space-x-2">
               <input
+                className="accent-accent-dark"
                 type="checkbox"
                 id="negativeCustomValue"
                 checked={isCustomValueNegative}
                 onChange={(e) => setIsCustomValueNegative(e.target.checked)}
               />
-              <label htmlFor="negativeCustomValue">Negativas</label>
+              <label htmlFor="negativeCustomValue">Negatives</label>
             </div>
             <button
-              className="bg-purple-400 text-white px-4 py-2 rounded-sm font-semibold"
+              className="bg-primary text-white px-4 py-2 rounded-sm font-semibold"
               onClick={onAddCustomValue}
             >
-              Añadir
+              Afegir
             </button>
           </>
         )}
       </div>
 
       {/* LIST */}
-      <div className="flex flex-col gap-2">
+      <div className=" flex flex-col gap-2">
         {activeCounter.additions.map((item, i) => (
           <div
             key={i}
-            className="flex items-center justify-between px-4 bg-gray-50 shadow"
+            className="flex items-center justify-between px-4 bg-secondary shadow"
           >
             <div>{item.date}</div>
             <div
               className={`${
-                item.substractedHours < 0 ? 'text-purple-500' : 'text-green-400'
+                item.substractedHours < 0 ? 'text-primary' : 'text-green-700'
               } font-bold`}
             >
-              {item.substractedHours} horas
+              {item.substractedHours} hores
             </div>
             <button
               className="text-xl font-bold p-2 cursor-pointer"
@@ -213,12 +222,38 @@ export const CounterDetails = ({
       </div>
 
       {/* DELETE */}
-      <button
-        className="bg-red-400 py-4 rounded-sm uppercase font-semibold text-red-950"
-        onClick={handleDeleteCounter}
-      >
-        Borrar
-      </button>
+      <div className="mt-4">
+        {showConfirmation ? (
+          <div>
+            <div>Vols esborrar definitivament el Counter?</div>
+            <div className="font-bold text-lg text-red-400">
+              Acció irreversible
+            </div>
+
+            <div className="flex gap-x-4">
+              <button
+                className="grow bg-secondary rounded-sm font-bold text-lg"
+                onClick={handleCancelConfirmation}
+              >
+                Cancelar
+              </button>
+              <button
+                className="grow bg-red-400 py-4 rounded-sm font-bold text-lg"
+                onClick={handleDeleteCounter}
+              >
+                Borrar
+              </button>
+            </div>
+          </div>
+        ) : (
+          <button
+            className="w-full bg-red-400 py-4 rounded-sm uppercase font-bold tracking-wider text-black"
+            onClick={handleShowConfirmation}
+          >
+            Borrar Counter
+          </button>
+        )}
+      </div>
     </div>
   );
 };

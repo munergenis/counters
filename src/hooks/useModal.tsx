@@ -26,7 +26,7 @@ export const useModal = () => {
         >
           {modalContent}
           <button
-            className="absolute top-2 right-2 bg-purple-900 text-white font-bold text-2xl px-2 pb-1 rounded-sm cursor-pointer"
+            className="absolute top-2 right-2 bg-accent text-black font-bold text-2xl p-0 w-8 h-8 rounded-sm cursor-pointer"
             onClick={closeModal}
           >
             &times;

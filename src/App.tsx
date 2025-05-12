@@ -18,8 +18,8 @@ const App = () => {
   const { Modal, openModal, closeModal, showModal } = useModal();
 
   return (
-    <div className="relative">
-      <div className="p-8">
+    <div className="relative font-montserrat">
+      <div className="p-8 max-w-md mx-auto">
         <Header />
 
         {activeCounter ? (

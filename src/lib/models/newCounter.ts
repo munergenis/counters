@@ -1,4 +1,8 @@
-import { MAX_HOURS, MIN_HOURS } from '../config/consts';
+import {
+  MAX_COUNTER_TITLE_LENGTH,
+  MAX_HOURS,
+  MIN_HOURS,
+} from '../config/consts';
 
 import { z } from 'zod';
 
@@ -6,28 +10,31 @@ export type NewCounterFormValues = z.infer<typeof newCounterSchema>;
 export const newCounterSchema = z.object({
   title: z
     .string({
-      required_error: 'Obligatorio',
-      invalid_type_error: 'Texto no válido',
+      required_error: 'Obligatòri',
+      invalid_type_error: 'Text no vàlid',
     })
-    .min(1, 'Mínimo 1 caracter')
-    .max(10, 'Máximo 10 caracteres'),
+    .min(1, 'Mínim 1 caràcter')
+    .max(
+      MAX_COUNTER_TITLE_LENGTH,
+      `Màxim ${MAX_COUNTER_TITLE_LENGTH} caràcters`
+    ),
   remainingHours: z
     .number({
-      required_error: 'Obligatorio',
-      invalid_type_error: 'Numero no válido',
+      required_error: 'Obligatòri',
+      invalid_type_error: 'Número no vàlid',
     })
-    .int('No puede tener decimales')
-    .lte(MAX_HOURS, `No puede ser mayor a ${MAX_HOURS}`)
-    .gte(MIN_HOURS, `No puede ser menor a ${MIN_HOURS}`),
+    .int('No pot tenir decimals')
+    .lte(MAX_HOURS, `No pot ser major a ${MAX_HOURS}`)
+    .gte(MIN_HOURS, `No pot ser menor a ${MIN_HOURS}`),
   substractingOptions: z
     .array(
       z
         .number({
-          required_error: 'Obligatorio',
-          invalid_type_error: 'Numero no válido',
+          required_error: 'Obligatòri',
+          invalid_type_error: 'Número no vàlid',
         })
-        .int('No puede tener decimales')
-        .positive('Debe ser mayor a 0')
+        .int('No pot tenir decimals')
+        .positive('Ha de ser major a 0')
     )
-    .min(1, 'Un turno mínimo'),
+    .min(1, 'Un torn mínim'),
 });

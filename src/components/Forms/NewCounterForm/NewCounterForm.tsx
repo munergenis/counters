@@ -10,8 +10,11 @@ import {
   newCounterSchema,
 } from '@/lib/models/newCounter';
 
+import { ArrayButton } from '../components/ArrayButton';
 import { Counter } from '@/lib/types/counter';
 import { FormError } from '../components';
+import { InputCard } from '../components/InputCard';
+import { SubmitButton } from '../components/SubmitButton';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 interface Props {
@@ -60,27 +63,32 @@ export const NewCounterForm = ({ closeModal, onAddCounter }: Props) => {
         control={control}
         name="title"
         render={({ field }) => (
-          <div className="flex flex-col text-purple-800 bg-purple-200 p-2 font-semibold rounded-sm">
-            <label htmlFor="title">Titulo</label>
-            <div className="relative">
+          <InputCard>
+            <label
+              className="font-bold"
+              htmlFor={field.name}
+            >
+              Títol
+            </label>
+            <div className="flex justify-between items-center">
               <input
-                className="bg-purple-50 p-2 rounded-sm"
                 id={field.name}
                 type="text"
                 placeholder={new Date().getFullYear().toString()}
                 {...field}
               />
               <span
-                className={`absolute inset-y-0 right-0 ${
+                className={`text-black/70 ${
                   MAX_COUNTER_TITLE_LENGTH - field.value.length < 0 &&
-                  'text-red-600'
+                  'text-error'
                 }`}
               >
-                {MAX_COUNTER_TITLE_LENGTH - field.value.length}/10
+                {MAX_COUNTER_TITLE_LENGTH - field.value.length}/
+                {MAX_COUNTER_TITLE_LENGTH}
               </span>
             </div>
             {errors.title && <FormError>{errors.title.message}</FormError>}
-          </div>
+          </InputCard>
         )}
       />
 
@@ -88,10 +96,14 @@ export const NewCounterForm = ({ closeModal, onAddCounter }: Props) => {
         control={control}
         name="remainingHours"
         render={({ field }) => (
-          <div className="flex flex-col text-purple-800 bg-purple-200 p-2 font-semibold rounded-sm">
-            <label htmlFor={field.name}>Horas Restantes</label>
+          <InputCard>
+            <label
+              className="font-bold"
+              htmlFor={field.name}
+            >
+              Dèbit horari
+            </label>
             <input
-              className="bg-purple-50 p-2 rounded-sm"
               id={field.name}
               type="number"
               {...field}
@@ -104,29 +116,21 @@ export const NewCounterForm = ({ closeModal, onAddCounter }: Props) => {
             {errors.remainingHours && (
               <FormError>{errors.remainingHours.message}</FormError>
             )}
-          </div>
+          </InputCard>
         )}
       />
 
-      <div className="flex flex-col space-y-2 text-purple-800 bg-purple-200 p-2 font-semibold rounded-sm">
+      <InputCard className="space-y-2">
         <div className="flex justify-between">
-          <label>Turnos</label>
+          <label className="font-bold">Torns</label>
           <div className="flex gap-x-2">
-            <button
-              className="w-8 h-8 rounded-full flex items-baseline justify-center font-semibold text-xl bg-purple-50 disabled:hidden"
-              type="button"
+            <ArrayButton
               disabled={substrOpts.length === 1}
               onClick={removeTurn}
             >
               &ndash;
-            </button>
-            <button
-              className="w-8 h-8 rounded-full flex items-baseline justify-center font-semibold text-xl bg-purple-50"
-              type="button"
-              onClick={addTurn}
-            >
-              +
-            </button>
+            </ArrayButton>
+            <ArrayButton onClick={addTurn}>+</ArrayButton>
           </div>
         </div>
         {errors.substractingOptions?.root && (
@@ -138,9 +142,8 @@ export const NewCounterForm = ({ closeModal, onAddCounter }: Props) => {
             control={control}
             name={`substractingOptions.${i}` as const}
             render={({ field }) => (
-              <>
+              <div className="flex flex-col">
                 <input
-                  className="bg-purple-50 p-2 rounded-sm"
                   type="number"
                   {...field}
                   onChange={(e) => {
@@ -153,18 +156,13 @@ export const NewCounterForm = ({ closeModal, onAddCounter }: Props) => {
                 {errors.substractingOptions?.[i] && (
                   <FormError>{errors.substractingOptions[i].message}</FormError>
                 )}
-              </>
+              </div>
             )}
           />
         ))}
-      </div>
+      </InputCard>
 
-      <button
-        className="bg-purple-400 text-white font-semibold text-2xl py-2 rounded-sm"
-        type="submit"
-      >
-        Añadir
-      </button>
+      <SubmitButton />
     </form>
   );
 };

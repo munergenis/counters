@@ -23,10 +23,10 @@ export const AddCounterButton = ({
   };
   return (
     <button
-      className="text-center bg-purple-300 text-purple-950 py-4 rounded-sm text-2xl font-semibold uppercase cursor-pointer"
+      className="text-center bg-accent text-black py-4 rounded-sm text-2xl font-semibold uppercase cursor-pointer"
       onClick={handleClick}
     >
-      Nuevo
+      Nou
     </button>
   );
 };
