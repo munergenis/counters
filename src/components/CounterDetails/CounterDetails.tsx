@@ -201,18 +201,18 @@ export const CounterDetails = ({
         {activeCounter.additions.map((item, i) => (
           <div
             key={i}
-            className="flex items-center justify-between px-4 bg-secondary shadow"
+            className="grid grid-cols-3 items-center justify-between px-4 bg-secondary shadow"
           >
-            <div>{item.date}</div>
+            <div className="text-left">{item.date}</div>
             <div
               className={`${
                 item.substractedHours < 0 ? 'text-primary' : 'text-green-700'
-              } font-bold`}
+              } font-bold text-center`}
             >
               {item.substractedHours} hores
             </div>
             <button
-              className="text-xl font-bold p-2 cursor-pointer"
+              className="text-xl text-right font-bold p-2 cursor-pointer"
               onClick={() => onDeleteAddition(i)}
             >
               &times;
